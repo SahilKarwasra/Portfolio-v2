@@ -25,6 +25,7 @@ export const marqueeTop = [
   "KOTLIN",
   "JETPACK COMPOSE",
   "FLUTTER",
+  "Kotlin Multiplatform",
   "FIREBASE",
   "REAL-TIME",
   "FINTECH",

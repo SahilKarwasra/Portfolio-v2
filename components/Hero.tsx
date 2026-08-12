@@ -84,7 +84,7 @@ export default function Hero({ loaded }: { loaded: boolean }) {
         <FadeIn loaded={loaded} delay={0.2}>
           <div className="flex flex-wrap items-start justify-between gap-y-2 font-mono text-[11px] uppercase tracking-[0.2em] md:text-xs">
             <span>
-              PORTFOLIO — V2.0
+              PORTFOLIO 
               <span className="ml-3 hidden text-ink/40 sm:inline">/ EST. 2024</span>
             </span>
             <span className="hidden text-right sm:inline">
