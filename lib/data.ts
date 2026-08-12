@@ -4,8 +4,8 @@ export const site = {
   lastName: "KARWASRA",
   role: "SOFTWARE ENGINEER",
   subRole: "FULL-STACK MOBILE",
-  location: "Delhi, India",
-  coords: "28.6139° N, 77.2089° E",
+  location: "LONDON, UNITED KINGDOM",
+  coords: "51.5072° N / 0.1276° W",
   timezoneLabel: "LON",
   email: "sahilkarwasra11@gmail.com",
   heroIntro:
@@ -25,7 +25,6 @@ export const marqueeTop = [
   "KOTLIN",
   "JETPACK COMPOSE",
   "FLUTTER",
-  "Kotlin Multiplatform",
   "FIREBASE",
   "REAL-TIME",
   "FINTECH",
@@ -34,7 +33,7 @@ export const marqueeTop = [
 
 export const marqueeAvailability = [
   "OPEN TO SENIOR ROLES",
-  "Delhi",
+  "LONDON",
   "REMOTE",
   "ON-SITE",
   "LET'S TALK",
@@ -45,7 +44,7 @@ export const aboutStatement =
 
 export const aboutMeta = [
   { k: "CURRENTLY", v: "SOFTWARE ENGINEER @ SDLC CORP." },
-  { k: "BASED IN", v: "Delhi, India" },
+  { k: "BASED IN", v: "LONDON, UNITED KINGDOM" },
   { k: "FOCUS", v: "ANDROID / FULL-STACK MOBILE" },
   { k: "EDUCATION", v: "B.S. COMPUTER APPLICATION — PANJAB UNIVERSITY" },
 ];

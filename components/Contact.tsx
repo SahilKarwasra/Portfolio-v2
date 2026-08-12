@@ -87,7 +87,7 @@ export default function Contact() {
       {/* outlined name ticker */}
       <div className="relative mt-16 md:mt-24" aria-hidden>
         <Marquee
-          items={[site.name.toUpperCase(), "SOFTWARE ENGINEER", site.name.toUpperCase(), "Delhi, INDIA"]}
+          items={[site.name.toUpperCase(), "SOFTWARE ENGINEER", site.name.toUpperCase(), "LONDON, UK"]}
           variant="outline"
           speed={34}
           className="border-t border-paper/25 py-5 [&_span]:text-[clamp(3rem,8vw,7rem)] md:[&_span]:text-[clamp(3rem,8vw,7rem)]"

@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://sahilkarwasra.app"),
   title: "Sahil Karwasra — Software Engineer",
   description:
-    "Full-stack mobile engineer in Delhi, India. Kotlin, Jetpack Compose, Flutter and the cloud behind them — fintech super apps, real-time platforms, production code since 2024.",
+    "Full-stack mobile engineer in London, UK. Kotlin, Jetpack Compose, Flutter and the cloud behind them — fintech super apps, real-time platforms, production code since 2024.",
   keywords: [
     "Sahil Karwasra",
     "Software Engineer",
@@ -33,12 +33,12 @@ export const metadata: Metadata = {
     "Kotlin",
     "Jetpack Compose",
     "Flutter",
-    "Delhi",
+    "London",
   ],
   openGraph: {
     title: "Sahil Karwasra — Software Engineer",
     description:
-      "Full-stack mobile engineer in Delhi, India. Fintech super apps, real-time platforms, Kotlin-first.",
+      "Full-stack mobile engineer in London, UK. Fintech super apps, real-time platforms, Kotlin-first.",
     url: "https://sahilkarwasra.app",
     siteName: "Sahil Karwasra",
     images: [{ url: "/og.png", width: 1200, height: 630, alt: "Sahil Karwasra — Software Engineer" }],
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Sahil Karwasra — Software Engineer",
-    description: "Full-stack mobile engineer in Delhi, India.",
+    description: "Full-stack mobile engineer in London, UK.",
     images: ["/og.png"],
   },
   robots: { index: true, follow: true },
