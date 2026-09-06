@@ -1,48 +1,35 @@
-"use client";
-
-import { AnimatePresence } from "motion/react";
-import { useCallback, useState } from "react";
-import About from "@/components/About";
-import Capabilities from "@/components/Capabilities";
-import Contact from "@/components/Contact";
-import Cursor from "@/components/Cursor";
-import Experience from "@/components/Experience";
+import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
-import Navbar from "@/components/Navbar";
-import Preloader from "@/components/Preloader";
-import SmoothScroll from "@/components/SmoothScroll";
+import About from "@/components/About";
+import Capabilities from "@/components/Capabilities";
+import Experience from "@/components/Experience";
+import Education from "@/components/Education";
+import Projects from "@/components/Projects";
 import Stack from "@/components/Stack";
-import { marqueeAvailability, marqueeTop } from "@/lib/data";
+import Contact from "@/components/Contact";
 
-export default function Home() {
-  const [loaded, setLoaded] = useState(false);
-  const [showPreloader, setShowPreloader] = useState(true);
-
-  const handleDone = useCallback(() => {
-    setLoaded(true);
-    // let the curtain finish lifting before unmounting
-    setTimeout(() => setShowPreloader(false), 1100);
-  }, []);
-
+export default function Page() {
   return (
-    <SmoothScroll>
-      <AnimatePresence>{showPreloader && <Preloader onDone={handleDone} />}</AnimatePresence>
-
-      <Cursor />
-      <Navbar loaded={loaded} />
-
-      <main>
-        <Hero loaded={loaded} />
-        <Marquee items={marqueeTop} />
+    <>
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:border-3 focus:border-ink focus:bg-sun focus:px-4 focus:py-2 focus:font-bold"
+      >
+        Skip to content
+      </a>
+      <Navbar />
+      <main id="main">
+        <Hero />
+        <Marquee />
         <About />
         <Capabilities />
         <Experience />
+        <Education />
+        {/* <Projects /> */}
         <Stack />
-        <Marquee items={marqueeAvailability} variant="cobalt" speed={20} />
-        <Contact />
       </main>
-    </SmoothScroll>
+      <Contact />
+    </>
   );
 }
-

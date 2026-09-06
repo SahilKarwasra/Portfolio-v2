@@ -1,6 +1,6 @@
-# SAHIL KARWASRA — PORTFOLIO V2.0
+# Sahil Karwasra — Portfolio 
 
-Brutalist single-page portfolio. Next.js 15 · React 19 · Tailwind CSS · Motion (Framer Motion v12) · Lenis smooth scroll.
+Neo-brutalist single-page portfolio. Next.js 15 · React 19 · Tailwind CSS · Motion (Framer Motion v12).
 
 ## Run it
 
@@ -13,38 +13,45 @@ npm run build    # production build
 ## Deploy (Vercel)
 
 1. Push this folder to a GitHub repo.
-2. Import the repo at vercel.com — zero config needed, it detects Next.js.
-3. Point your domain at it. Update `metadataBase` in `app/layout.tsx` if the domain changes.
+2. Import the repo at vercel.com — zero config, it detects Next.js.
+3. Update `metadataBase` in `app/layout.tsx` if the domain changes.
 
 ## Edit content
 
-Every word on the site lives in **`lib/data.ts`** — name, hero copy, about statement, stats, capabilities, experience entries, stack, socials. Change it there; no component edits needed.
+Every word on the site lives in **`lib/data.ts`** — name, status, hero copy, about,
+stats, capabilities, experience, education, projects, stack, socials.
+Change it there; no component edits needed.
 
-- **Resume PDF** → replace `public/resume.pdf` with any newer version (keep the filename).
-- **Colors** → `tailwind.config.ts` (`paper`, `ink`, `cobalt`). The grain, grid and stroke utilities are in `app/globals.css`.
-- **Fonts** → `app/layout.tsx` (Anton / Space Grotesk / JetBrains Mono via `next/font`).
-- **OG image** → `public/og.png` (1200×630), referenced in `app/layout.tsx`.
+- **Photo** → replace `public/sahil.jpg` (square works best). Currently the GitHub avatar.
+- **Resume** → replace `public/resume.pdf` (keep the filename).
+- **Location** → `site.location` / `site.shortLocation` in `lib/data.ts`.
+- **Colors** → `tailwind.config.ts` (`sun`, `droid`, `violet`, `sky`, `pink`, `paper`).
+- **Fonts** → `app/layout.tsx` (Archivo Black + Archivo via `next/font`).
+- **OG image** → `public/og.png` (1200×630).
 
 ## Structure
 
 ```
 app/
-  layout.tsx      fonts + SEO metadata
-  page.tsx        section order + preloader gate
-  globals.css     brutalist utilities (grid, grain, strokes)
+  layout.tsx       fonts + SEO metadata
+  page.tsx         section order
+  globals.css      neo-brutalist utilities (.nb borders/shadows, .press hover, .dots grid)
+  icon.svg         favicon
 components/
-  Preloader       percentage counter curtain
-  Navbar          difference-blend nav + fullscreen mobile menu
-  Hero            full-bleed kinetic name poster
-  Marquee         seamless ticker (ink / cobalt / outline variants)
-  About           scroll-linked word fill + count-up stats
-  Capabilities    invert-on-hover rows
-  Experience      career-as-changelog (ink section)
-  Stack           spec-sheet grid
-  Contact         CTA + socials + live London clock + footer
-  Cursor          difference-blend custom cursor (desktop only)
-  SmoothScroll    Lenis provider + anchor routing
-lib/data.ts       ALL content
+  Navbar           sticky nav + full-screen mobile menu
+  Hero             yellow hero, giant name, polaroid photo card, entrance animation
+  Marquee          skills ticker
+  About            statement + status card + count-up stats
+  Capabilities     "What I do" cards
+  Experience       timeline with "Now" marker (MSc) + 3 roles
+  Education        UEA MSc + Panjab University
+  Projects         pinned GitHub projects
+  Stack            grouped tool chips
+  Contact          email CTA, socials, footer with live UK clock
+  CountUp          in-view number animation
+  ui.tsx           Button, Sticker, Chip, SectionHeading, icons
+lib/data.ts        ALL content
 ```
 
-Accessibility: keyboard focus styles, semantic headings, `prefers-reduced-motion` disables the preloader ramp, smooth scroll, marquees, cursor and parallax.
+Accessibility: semantic headings, skip link, keyboard focus styles, `prefers-reduced-motion`
+disables the entrance animation, marquee and count-up.

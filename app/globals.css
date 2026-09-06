@@ -2,105 +2,97 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  color-scheme: light;
-}
-
-html {
-  scroll-behavior: auto;
-}
-
-body {
-  @apply bg-paper font-sans text-ink antialiased;
-  text-rendering: optimizeLegibility;
-}
-
-::selection {
-  @apply bg-cobalt text-paper;
-}
-
-:focus-visible {
-  outline: 2px solid #2b2be6;
-  outline-offset: 3px;
-}
-
-/* ---------- brutalist utilities ---------- */
-
-.text-stroke-ink {
-  -webkit-text-stroke: 2px #141311;
-  color: transparent;
-}
-
-.text-stroke-paper {
-  -webkit-text-stroke: 1.5px rgba(233, 229, 220, 0.55);
-  color: transparent;
-}
-
-@media (max-width: 768px) {
-  .text-stroke-ink {
-    -webkit-text-stroke-width: 1.25px;
+@layer base {
+  :root {
+    --nav-h: 72px;
   }
-  .text-stroke-paper {
-    -webkit-text-stroke-width: 1px;
-  }
-}
 
-/* faint drafting grid */
-.bg-grid {
-  background-image: linear-gradient(to right, rgba(20, 19, 17, 0.055) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(20, 19, 17, 0.055) 1px, transparent 1px);
-  background-size: 72px 72px;
-}
-
-.bg-grid-paper {
-  background-image: linear-gradient(to right, rgba(233, 229, 220, 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(233, 229, 220, 0.06) 1px, transparent 1px);
-  background-size: 72px 72px;
-}
-
-/* film grain over everything — kills the flat digital look */
-.noise::after {
-  content: "";
-  position: fixed;
-  inset: -50%;
-  z-index: 90;
-  pointer-events: none;
-  opacity: 0.045;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 256px 256px;
-}
-
-/* custom cursor active: hide the native one on precise pointers */
-@media (pointer: fine) {
-  .has-cursor,
-  .has-cursor a,
-  .has-cursor button {
-    cursor: none;
-  }
-}
-
-/* marquee pauses for people who prefer reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .animate-marquee,
-  .animate-spin-slow {
-    animation: none !important;
-  }
   html {
-    scroll-behavior: auto !important;
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--nav-h) + 16px);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  ::selection {
+    background: #ffd23f;
+    color: #000;
+  }
+
+  :focus-visible {
+    outline: 3px solid #000;
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    .animate-marquee,
+    .animate-blink {
+      animation: none !important;
+    }
+    * {
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-/* thin brutalist scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
+@layer components {
+  /* The physical object: thick outline, hard shadow. */
+  .nb {
+    @apply border-3 border-ink shadow-nb;
+  }
+  .nb-sm {
+    @apply border-3 border-ink shadow-nb-sm;
+  }
+  .nb-lg {
+    @apply border-3 border-ink shadow-nb-lg;
+  }
+
+  /* Interactive objects get pushed into the page on hover / press. */
+  .press {
+    @apply transition-[transform,box-shadow] duration-150 ease-out;
+  }
+  .press:hover {
+    transform: translate(3px, 3px);
+  }
+  .press.nb:hover {
+    @apply shadow-[3px_3px_0_0_#000];
+  }
+  .press.nb-sm:hover {
+    @apply shadow-[1px_1px_0_0_#000];
+  }
+  .press:active {
+    transform: translate(6px, 6px);
+    box-shadow: none !important;
+  }
+
+  /* Dot-grid texture used behind the hero and contact block. */
+  .dots {
+    background-image: radial-gradient(#000 1.25px, transparent 1.3px);
+    background-size: 22px 22px;
+  }
+
+  /* Marker-pen highlight for inline phrases. */
+  .marker {
+    background: linear-gradient(transparent 58%, #ffd23f 58%, #ffd23f 92%, transparent 92%);
+  }
+
+  .chip {
+    @apply inline-block border-3 border-ink bg-white px-2.5 py-1 text-sm font-semibold leading-none;
+  }
 }
-::-webkit-scrollbar-track {
-  background: #e9e5dc;
-  border-left: 2px solid #141311;
-}
-::-webkit-scrollbar-thumb {
-  background: #141311;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #2b2be6;
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .pause-on-hover:hover .animate-marquee {
+    animation-play-state: paused;
+  }
 }

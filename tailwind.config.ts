@@ -1,23 +1,32 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
+  content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./lib/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        paper: "#E9E5DC",
-        ink: "#141311",
-        cobalt: "#2B2BE6",
+        paper: "#F7F5EF",
+        ink: "#000000",
+        sun: "#FFD23F",
+        droid: "#3DDC84",
+        violet: "#9D84FF",
+        sky: "#5CC8FF",
+        pink: "#FF90E8",
       },
       fontFamily: {
-        display: ["var(--font-anton)", "Impact", "sans-serif"],
-        sans: ["var(--font-grotesk)", "system-ui", "sans-serif"],
-        mono: ["var(--font-jbmono)", "ui-monospace", "monospace"],
+        display: ["var(--font-archivo-black)", "Impact", "Arial Black", "sans-serif"],
+        sans: ["var(--font-archivo)", "Arial", "Helvetica", "sans-serif"],
+      },
+      borderWidth: {
+        3: "3px",
       },
       boxShadow: {
-        brutal: "6px 6px 0 0 #141311",
-        "brutal-sm": "4px 4px 0 0 #141311",
-        "brutal-cobalt": "8px 8px 0 0 #2B2BE6",
+        nb: "6px 6px 0 0 #000",
+        "nb-sm": "4px 4px 0 0 #000",
+        "nb-lg": "10px 10px 0 0 #000",
+        "nb-xl": "14px 14px 0 0 #000",
+        "nb-press": "2px 2px 0 0 #000",
+        none: "none",
       },
       keyframes: {
         marquee: {
@@ -25,14 +34,13 @@ const config: Config = {
           "100%": { transform: "translateX(-50%)" },
         },
         blink: {
-          "0%, 49%": { opacity: "1" },
-          "50%, 100%": { opacity: "0" },
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.25" },
         },
       },
       animation: {
-        marquee: "marquee 24s linear infinite",
-        blink: "blink 1.2s step-end infinite",
-        "spin-slow": "spin 16s linear infinite",
+        marquee: "marquee 28s linear infinite",
+        blink: "blink 1.6s ease-in-out infinite",
       },
     },
   },

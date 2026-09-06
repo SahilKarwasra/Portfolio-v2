@@ -1,111 +1,88 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { site, socials } from "@/lib/data";
-import Marquee from "./Marquee";
-import { Reveal, SectionHeading } from "./Reveal";
+import { contact, site, socials } from "@/lib/data";
+import { ArrowUp, ArrowUpRight, Container, GitHubIcon, LinkedInIcon, MailIcon } from "./ui";
 
-function LondonTime() {
-  const [time, setTime] = useState<string | null>(null);
-
+function useLocalTime() {
+  const [time, setTime] = useState<string>("");
   useEffect(() => {
     const fmt = new Intl.DateTimeFormat("en-GB", {
-      timeZone: "Europe/London",
       hour: "2-digit",
       minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
+      timeZone: "Europe/London",
     });
-    const update = () => setTime(fmt.format(new Date()));
-    update();
-    const id = setInterval(update, 1000);
+    const tick = () => setTime(fmt.format(new Date()));
+    tick();
+    const id = setInterval(tick, 15_000);
     return () => clearInterval(id);
   }, []);
-
-  return (
-    <span className="tabular-nums" suppressHydrationWarning>
-      {site.timezoneLabel} {time ?? "--:--:--"}
-    </span>
-  );
+  return time;
 }
 
 export default function Contact() {
+  const time = useLocalTime();
   const year = new Date().getFullYear();
 
   return (
-    <section id="contact" className="relative flex min-h-[100svh] flex-col bg-ink text-paper">
-      <div className="bg-grid-paper pointer-events-none absolute inset-0" aria-hidden />
+    <footer id="contact" className="scroll-mt-24 relative border-t-3 border-ink bg-violet" aria-labelledby="contact-title">
+      <div className="dots pointer-events-none absolute inset-0 opacity-[0.12]" aria-hidden="true" />
 
-      <div className="relative flex-1 px-5 pt-24 md:px-8 md:pt-36">
-        <SectionHeading index="005" title="CONTACT" note="THE PART THAT MATTERS" invert />
+      <Container className="relative py-20 md:py-28">
+        <h2 id="contact-title" className="max-w-4xl font-display text-4xl leading-[0.95] sm:text-5xl md:text-7xl">
+          {contact.headline}
+        </h2>
+        <p className="mt-6 max-w-2xl text-lg font-medium leading-relaxed md:text-xl">{contact.sub}</p>
 
-        <Reveal>
-          <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-paper/60 md:text-xs">
-            OPEN TO SENIOR ANDROID / FULL-STACK ROLES — LONDON OR REMOTE
-          </p>
-        </Reveal>
+        <a
+          href={`mailto:${site.email}`}
+          className="press nb-lg mt-10 inline-flex max-w-full flex-wrap items-center gap-3 bg-white px-5 py-4 font-display text-xl leading-none sm:px-7 sm:py-5 sm:text-2xl md:text-3xl"
+        >
+          <MailIcon className="h-7 w-7 shrink-0" />
+          <span className="break-all">{site.email}</span>
+        </a>
 
-        <Reveal delay={0.1}>
-          <h3 className="mt-6 font-display text-[clamp(3.25rem,12vw,11rem)] uppercase leading-[0.85]">
-            HAVE A ROLE
-            <br />
-            IN MIND<span className="text-cobalt">?</span>
-          </h3>
-        </Reveal>
-
-        <Reveal delay={0.2}>
-          <a
-            href={`mailto:${site.email}`}
-            className="group mt-10 inline-block max-w-full break-all font-sans text-[clamp(1.25rem,3.4vw,3rem)] font-medium tracking-tight underline decoration-2 underline-offset-8 transition-colors hover:text-cobalt hover:decoration-cobalt md:mt-14"
-          >
-            {site.email}
-            <span aria-hidden className="ml-3 inline-block transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1">
-              ↗
-            </span>
-          </a>
-        </Reveal>
-
-        <Reveal delay={0.25}>
-          <ul className="mt-14 grid grid-cols-2 border-l border-t border-paper/25 md:mt-20 md:grid-cols-4">
-            {socials.map((s) => (
-              <li key={s.label} className="border-b border-r border-paper/25">
+        <ul className="mt-8 flex flex-wrap gap-3">
+          {socials
+            .filter((s) => s.label !== "Email")
+            .map((s) => (
+              <li key={s.label}>
                 <a
                   href={s.href}
-                  target={s.href.startsWith("mailto:") ? undefined : "_blank"}
-                  rel="noreferrer"
-                  className="flex items-center justify-between px-4 py-5 font-mono text-[11px] uppercase tracking-[0.25em] transition-colors hover:bg-cobalt hover:text-paper md:px-5 md:text-xs"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="press nb inline-flex items-center gap-2 bg-ink px-5 py-3 font-display text-base leading-none text-white"
                 >
+                  {s.label === "GitHub" ? <GitHubIcon className="h-5 w-5" /> : null}
+                  {s.label === "LinkedIn" ? <LinkedInIcon className="h-5 w-5" /> : null}
                   {s.label}
-                  <span aria-hidden>↗</span>
+                  <ArrowUpRight className="h-4 w-4" />
                 </a>
               </li>
             ))}
-          </ul>
-        </Reveal>
-      </div>
+        </ul>
+      </Container>
 
-      {/* outlined name ticker */}
-      <div className="relative mt-16 md:mt-24" aria-hidden>
-        <Marquee
-          items={[site.name.toUpperCase(), "SOFTWARE ENGINEER", site.name.toUpperCase(), "LONDON, UK"]}
-          variant="outline"
-          speed={34}
-          className="border-t border-paper/25 py-5 [&_span]:text-[clamp(3rem,8vw,7rem)] md:[&_span]:text-[clamp(3rem,8vw,7rem)]"
-        />
+      <div className="relative border-t-3 border-ink bg-paper">
+        <Container className="flex flex-col gap-4 py-6 text-sm font-bold sm:flex-row sm:items-center sm:justify-between">
+          <p>
+            
+          </p>
+          <div className="flex items-center gap-4">
+            <p className="tabular-nums" aria-live="off">
+              {site.shortLocation}
+              {time ? `, ${time}` : ""}
+            </p>
+            <a
+              href="#main"
+              className="press nb-sm inline-flex h-10 w-10 items-center justify-center bg-sun"
+              aria-label="Back to top"
+            >
+              <ArrowUp className="h-4 w-4" />
+            </a>
+          </div>
+        </Container>
       </div>
-
-      {/* footer bar */}
-      <footer className="relative border-t border-paper/25 px-5 py-4 md:px-8">
-        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 font-mono text-[10px] uppercase tracking-[0.2em] text-paper/60 md:text-[11px]">
-          <span>© {year} {site.name.toUpperCase()}</span>
-          <span className="hidden sm:inline">
-            {site.location} — <LondonTime />
-          </span>
-          <a href="#top" className="transition-colors hover:text-cobalt">
-            BACK TO TOP ↑
-          </a>
-        </div>
-      </footer>
-    </section>
+    </footer>
   );
 }
