@@ -1,21 +1,16 @@
-// ---------------------------------------------------------------------------
-// Every word on the site lives here. Change content in this file only —
-// the components never hard-code copy.
-// ---------------------------------------------------------------------------
-
 export const site = {
   name: "Sahil Karwasra",
   firstName: "Sahil",
   lastName: "Karwasra",
-  role: "Software engineer",
-  subRole: "Full-stack mobile, Android-first",
+  role: "Software Engineer",
+  subRole: "Backend(GoLang) & Mobile Developer(Android/iOS)",
   location: "Norwich, United Kingdom",
   shortLocation: "Norwich, UK",
   email: "sahilkarwasra11@gmail.com",
-  url: "https://sahilkarwasra.app",
+  url: "https://sahilkarwasra.vercel.app",
   status: "Open to new roles",
   heroIntro:
-    "I build the apps people carry in their pockets: fintech super apps, live-streaming platforms and the real-time systems behind them. Three years of production Kotlin, Compose and Flutter. Now studying for an MSc in Advanced Computing Science at the University of East Anglia, and looking for my next role.",
+    "I build high-performance backend systems and APIs in Go (Golang), paired with production mobile apps. Specialised in concurrent services, real-time WebSockets, and clean architecture behind fintech and live platforms. Currently pursuing an MSc in Advanced Computing Science at the University of East Anglia, and open to new roles.",
   resumePath: "/resume.pdf",
   github: "https://github.com/sahilkarwasra",
   linkedin: "https://www.linkedin.com/in/sahilkarwasra/",
@@ -30,35 +25,38 @@ export const navLinks = [
 ];
 
 export const marqueeItems = [
-  "Android",
+  "Go (Golang)",
+  "Backend & APIs",
+  "Concurrent Systems",
+  "WebSockets",
+  "Microservices",
+  "Android & iOS",
   "Kotlin",
   "Jetpack Compose",
   "Flutter",
-  "Kotlin Multiplatform",
-  "Firebase",
-  "Go",
-  "Real-time",
   "Fintech",
-  "Clean architecture",
+  "Clean Architecture",
   "Open to new roles",
 ];
 
+export const aboutLede = "Go developer with scalable backend and full-stack mobile engineering expertise.";
+
 export const aboutStatement =
-  "I build software people carry in their pockets. Fintech super apps. Live-streaming platforms. Real-time everything. From first commit to production release I own the full stack: Kotlin on the surface, cloud underneath, clean architecture holding it all together.";
+  "I design and build resilient backend services in Go, high-concurrency systems, and the client applications that rely on them. From concurrent Go microservices and WebSocket hubs to production mobile apps, I focus on performance, clean architecture, and systems that scale effortlessly under load.";
 
 export const aboutMeta: { k: string; v: string; highlight?: boolean }[] = [
   { k: "Status", v: "Actively looking for new roles", highlight: true },
   { k: "Now", v: "MSc Advanced Computing Science, University of East Anglia" },
   { k: "Previously", v: "Software Engineer at SDLC Corp." },
   { k: "Based in", v: "Norwich, United Kingdom" },
-  { k: "Focus", v: "Android and full-stack mobile" },
+  { k: "Focus", v: "Go backend & distributed systems (with mobile)" },
 ];
 
 export const stats: { value: number; decimals?: number; suffix: string; label: string; color: "sun" | "sky" | "violet" | "droid" }[] = [
   { value: 3, suffix: "+", label: "years writing production code", color: "sun" },
-  { value: 8, suffix: "+", label: "apps shipped across Android, iOS and web", color: "sky" },
+  { value: 8, suffix: "+", label: "services and apps shipped across backend, mobile & web", color: "sky" },
   { value: 5, suffix: "", label: "user roles in one access-control system", color: "violet" },
-  { value: 4, suffix: "", label: "industries, from gaming to findtech", color: "droid" },
+  { value: 4, suffix: "", label: "industries, from gaming to fintech", color: "droid" },
 ];
 
 export type Capability = {
@@ -70,26 +68,26 @@ export type Capability = {
 
 export const capabilities: Capability[] = [
   {
-    title: "Android engineering",
-    desc: "Native apps in Kotlin and Jetpack Compose. Clean architecture, multi-module builds, made to scale well past version one.",
-    icon: "phone",
-    color: "droid",
-  },
-  {
-    title: "Cross-platform",
-    desc: "Flutter and Kotlin Multiplatform when one codebase makes sense. The same quality bar on both platforms.",
-    icon: "layers",
-    color: "sky",
-  },
-  {
-    title: "Backend and real-time",
-    desc: "Firebase, Node.js and Go services. Sockets, WebRTC and push notifications for products that update live.",
+    title: "Go & Backend Engineering",
+    desc: "High-performance services and APIs written in Go (Golang). Concurrency with goroutines and channels, RESTful APIs, Gin, clean architecture, and database persistence with PostgreSQL & MongoDB.",
     icon: "bolt",
     color: "sun",
   },
   {
-    title: "Team leadership",
-    desc: "Coding standards, code review and mentoring. I have led an Android team and kept the codebase honest.",
+    title: "Real-time & Distributed Systems",
+    desc: "Low-latency systems, WebSocket hubs, and event-driven pipelines. Built to power real-time chat, live streaming, and high-frequency updates.",
+    icon: "layers",
+    color: "sky",
+  },
+  {
+    title: "Mobile App Development",
+    desc: "Production native Android (Kotlin & Jetpack Compose) and cross-platform (Flutter). Clean architecture, offline caching, and robust API integrations.",
+    icon: "phone",
+    color: "droid",
+  },
+  {
+    title: "Architecture & Leadership",
+    desc: "Coding standards, code reviews, and architecture leadership. Experienced leading engineering teams and owning full delivery from design to production.",
     icon: "people",
     color: "violet",
   },
@@ -109,7 +107,7 @@ export const now = {
   label: "Now",
   period: "Sep 2026 to present",
   title: "MSc Advanced Computing Science, University of East Anglia",
-  desc: "Full-time postgraduate study in Norwich while actively interviewing for Android, full-stack mobile and software engineering roles across the UK, remote or hybrid.",
+  desc: "Full-time postgraduate study in Norwich while actively interviewing for Go, backend and software engineering roles across the UK, remote or hybrid.",
 };
 
 export const experience: Job[] = [
@@ -126,7 +124,7 @@ export const experience: Job[] = [
       "Led the Android team: coding standards, architecture guidelines, review process and CI/CD. Migrated the networking layer from Retrofit to Ktor Client.",
       "Cut crashes and improved responsiveness by optimising critical rendering paths and state management.",
     ],
-    tech: ["Kotlin", "Jetpack Compose", "Ktor", "Dagger Hilt", "Room", "WorkManager", "Stripe", "FCM", "CI/CD"],
+    tech: ["Go Lang", "Kotlin", "Jetpack Compose", "Ktor", "Dagger Hilt", "Room", "WorkManager", "Stripe", "FCM", "CI/CD"],
   },
   {
     company: "NS Ventures",
@@ -236,20 +234,19 @@ export const projects: Project[] = [
 ];
 
 export const stack: { category: string; items: string[]; exploring?: boolean }[] = [
-  { category: "Languages", items: ["Kotlin", "Dart", "Go", "Java", "TypeScript"] },
+  { category: "Languages", items: ["Go (Golang)", "Kotlin", "Java", "Dart", "TypeScript", "SQL"] },
+  { category: "Backend & Systems", items: ["Gin", "Distributed Systems", "PostgreSQL", "MongoDB", "Node.js", "Firebase", "FastAPI"] },
+  { category: "Real-time & Network", items: ["WebSockets", "Socket.IO", "WebRTC", "Ktor", "Retrofit", "REST"] },
+  { category: "Architecture", items: ["Clean Architecture", "Distributed Systems", "Concurrency", "Microservices", "Multi-module", "MVI", "MVVM"] },
   { category: "Mobile", items: ["Jetpack Compose", "Android SDK", "Flutter", "Kotlin Multiplatform", "Material 3"] },
-  { category: "Architecture", items: ["MVI", "MVVM", "Clean Architecture", "Multi-module", "SOLID"] },
-  { category: "Network and real-time", items: ["Ktor", "Retrofit", "WebSockets", "Socket.IO", "WebRTC", "REST"] },
-  { category: "Backend and cloud", items: ["Firebase", "Gin", "FastAPI", "Node.js", "PostgreSQL", "MongoDB", "Room"] },
-  { category: "Web", items: ["Flutter Web", "HTML", "CSS"] },
-  { category: "Payments and services", items: ["Stripe", "Razorpay", "FCM", "Google Maps SDK"] },
-  { category: "Tooling", items: ["Git", "GitHub Actions", "CI/CD", "Gradle", "Figma"] },
-  { category: "Currently exploring", items: ["Swift", "Cloud architecture"], exploring: true },
+  { category: "DevOps & Cloud", items: ["Docker", "Kubernetes", "Cloud Architecture", "Git", "GitHub Actions"] },
+  { category: "Payments & Services", items: ["Stripe", "Razorpay", "FCM", "Google Cloud", "AWS"] },
+  { category: "Currently exploring", items: ["Rust"], exploring: true },
 ];
 
 export const contact = {
   headline: "Let's build something people actually use.",
-  sub: "Open to Android, full-stack mobile and software engineering roles. UK based, happy to work remote, hybrid or on-site.",
+  sub: "Open to Go developer, backend and software engineering roles. UK based, happy to work remote, hybrid or on-site.",
 };
 
 export const socials = [

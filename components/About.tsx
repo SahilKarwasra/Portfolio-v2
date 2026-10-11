@@ -1,4 +1,4 @@
-import { aboutMeta, aboutStatement, stats } from "@/lib/data";
+import { aboutLede, aboutMeta, aboutStatement, stats } from "@/lib/data";
 import CountUp from "./CountUp";
 import { colorBg, Container, SectionHeading } from "./ui";
 
@@ -6,7 +6,7 @@ export default function About() {
   return (
     <section id="about" className="scroll-mt-24 py-20 md:py-28" aria-labelledby="about-title">
       <Container>
-        <SectionHeading id="about-title" title="About" color="sun" lede="Android-first engineer with the full stack in reach." />
+        <SectionHeading id="about-title" title="About" color="sun" lede={aboutLede} />
 
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:gap-14">
           <p className="text-balance text-2xl font-bold leading-snug md:text-3xl lg:col-span-3 lg:text-[2.1rem]">

@@ -17,7 +17,7 @@ const archivo = Archivo({
 
 const title = "Sahil Karwasra | Software Engineer";
 const description =
-  "Android-first, full-stack mobile engineer. Kotlin, Jetpack Compose, Flutter and the cloud behind them. Shipped fintech super apps and live-streaming platforms. MSc Advanced Computing Science at the University of East Anglia. Open to new roles.";
+  "Go / Golang developer and backend engineer with mobile expertise. High-performance APIs, real-time WebSockets, and clean production architectures. MSc Advanced Computing Science at University of East Anglia. Open to new roles.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://sahilkarwasra.app"),
@@ -25,10 +25,15 @@ export const metadata: Metadata = {
   description,
   keywords: [
     "Sahil Karwasra",
+    "Go Developer",
+    "Golang Developer",
+    "Backend Engineer",
     "Software Engineer",
-    "Android Engineer",
+    "Go",
+    "Gin",
+    "WebSockets",
+    "Android",
     "Kotlin",
-    "Jetpack Compose",
     "Flutter",
     "Norwich",
     "University of East Anglia",
@@ -39,7 +44,7 @@ export const metadata: Metadata = {
     description,
     url: "https://sahilkarwasra.app",
     siteName: "Sahil Karwasra",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Sahil Karwasra, Software Engineer" }],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Sahil Karwasra, Go Developer & Backend Engineer" }],
     locale: "en_GB",
     type: "website",
   },
