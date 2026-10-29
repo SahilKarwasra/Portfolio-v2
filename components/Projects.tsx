@@ -1,45 +1,34 @@
 import { projects, site } from "@/lib/data";
-import { ArrowUpRight, Button, Chip, colorBg, Container, GitHubIcon, SectionHeading } from "./ui";
+import { Stagger, StaggerItem } from "./motion";
+import { Button, Container, SectionHeading } from "./ui";
 
 export default function Projects() {
   return (
-    <section id="projects" className="scroll-mt-24 py-20 md:py-28" aria-labelledby="projects-title">
+    <section id="projects" className="py-32 md:py-48" aria-labelledby="projects-title">
       <Container>
-        <SectionHeading id="projects-title" title="Projects" color="pink" lede="Side projects on GitHub, built to learn the whole stack." />
+        <SectionHeading id="projects-title" title="Projects" lede="Side projects on GitHub, built to learn the whole stack." />
 
-        <ul className="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <Stagger className="grid grid-cols-1 gap-x-12 gap-y-20 md:grid-cols-2">
           {projects.map((p) => (
-            <li key={p.name} className="nb flex flex-col bg-white">
-              <div className={`border-b-3 border-ink p-6 md:p-7 ${colorBg[p.color]}`}>
-                <h3 className="font-display text-3xl leading-none md:text-4xl">{p.name}</h3>
-                <p className="mt-2 text-lg font-bold">{p.tagline}</p>
+            <StaggerItem key={p.name} className="flex flex-col">
+              <h3 className="font-display text-[clamp(2.4rem,4.4vw,4rem)] font-bold leading-[0.95] tracking-crush">{p.name}</h3>
+              <p className="mt-3 text-xl text-go-soft">{p.tagline}</p>
+              <p className="mt-5 text-lg leading-relaxed text-ink/80">{p.desc}</p>
+              <p className="mt-5 text-base text-ink/55">{p.tech.join("  ·  ")}</p>
+              <div className="mt-auto flex flex-wrap gap-3 pt-8">
+                {p.links.map((l, i) => (
+                  <Button key={l.href} href={l.href} external variant={i === 0 ? "solid" : "ghost"}>
+                    {l.label}
+                  </Button>
+                ))}
               </div>
-              <div className="flex flex-1 flex-col p-6 md:p-7">
-                <p className="font-medium leading-relaxed md:text-lg">{p.desc}</p>
-                <ul className="mt-5 flex flex-wrap gap-2" aria-label="Built with">
-                  {p.tech.map((t) => (
-                    <li key={t}>
-                      <Chip className="bg-paper">{t}</Chip>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-auto flex flex-wrap gap-3 pt-7">
-                  {p.links.map((l, i) => (
-                    <Button key={l.href} href={l.href} external variant={i === 0 ? "ink" : "white"}>
-                      <GitHubIcon className="h-5 w-5" />
-                      {l.label}
-                      <ArrowUpRight className="h-4 w-4" />
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            </li>
+            </StaggerItem>
           ))}
-        </ul>
+        </Stagger>
 
-        <p className="mt-10 flex flex-wrap items-center gap-3 font-bold">
-          More on GitHub:
-          <a href={site.github} target="_blank" rel="noopener noreferrer" className="marker font-display">
+        <p className="mt-20 text-lg">
+          More on GitHub:{" "}
+          <a href={site.github} target="_blank" rel="noopener noreferrer" className="link-underline pb-1 text-go">
             github.com/sahilkarwasra
           </a>
         </p>

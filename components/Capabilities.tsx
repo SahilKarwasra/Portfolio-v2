@@ -1,28 +1,32 @@
 import { capabilities } from "@/lib/data";
-import { CapabilityIcon, colorBg, Container, SectionHeading } from "./ui";
+import BentoVisual from "./BentoVisuals";
+import { Spotlight, Stagger, StaggerItem } from "./motion";
+import { Container, SectionHeading } from "./ui";
 
 export default function Capabilities() {
   return (
-    <section className="border-y-3 border-ink bg-white py-20 md:py-28" aria-labelledby="capabilities-title">
+    <section className="py-24 md:py-32" aria-labelledby="capabilities-title">
       <Container>
-        <SectionHeading id="capabilities-title" title="What I do" color="sky" lede="Four things I get hired for, and enjoy doing." />
+        <SectionHeading
+          id="capabilities-title"
+          title="What I do."
+          lede="Backend first, with the client, the AI layer and the team around it."
+        />
 
-        <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
+        <Stagger as="ul" className="grid grid-cols-1 gap-4 md:grid-cols-6">
           {capabilities.map((c) => (
-            <li key={c.title} className="nb flex gap-5 bg-paper p-6 md:p-8">
-              <span
-                className={`flex h-14 w-14 shrink-0 items-center justify-center border-3 border-ink ${colorBg[c.color]}`}
-                aria-hidden="true"
-              >
-                <CapabilityIcon name={c.icon} />
-              </span>
-              <div>
-                <h3 className="font-display text-2xl leading-tight">{c.title}</h3>
-                <p className="mt-3 text-base font-medium leading-relaxed md:text-lg">{c.desc}</p>
-              </div>
-            </li>
+            <StaggerItem key={c.title} className={c.span === "wide" ? "md:col-span-4" : "md:col-span-2"}>
+              <Spotlight className="flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-panel">
+                <div className="h-60 border-b border-line bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.03),transparent_70%)]" aria-hidden="true">
+                  <BentoVisual kind={c.visual} />
+                </div>
+                <div className="p-6 text-[17px] leading-relaxed">
+                  <h3 className="inline font-medium text-ink">{c.title}</h3> <p className="inline text-mute">{c.desc}</p>
+                </div>
+              </Spotlight>
+            </StaggerItem>
           ))}
-        </ul>
+        </Stagger>
       </Container>
     </section>
   );
