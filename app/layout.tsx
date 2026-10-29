@@ -1,17 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Archivo_Black } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
+import Providers from "@/components/Providers";
 import "./globals.css";
 
-const archivoBlack = Archivo_Black({
-  weight: "400",
+const mono = Geist_Mono({
   subsets: ["latin"],
-  variable: "--font-archivo-black",
+  variable: "--font-mono",
   display: "swap",
 });
 
-const archivo = Archivo({
+const sans = Geist({
   subsets: ["latin"],
-  variable: "--font-archivo",
+  variable: "--font-sans",
   display: "swap",
 });
 
@@ -58,15 +58,18 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#FFD23F",
+  themeColor: "#08090A",
+  colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${archivoBlack.variable} ${archivo.variable}`}>
-      <body>{children}</body>
+    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

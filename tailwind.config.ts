@@ -5,42 +5,27 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        paper: "#F7F5EF",
-        ink: "#000000",
-        sun: "#FFD23F",
-        droid: "#3DDC84",
-        violet: "#9D84FF",
-        sky: "#5CC8FF",
-        pink: "#FF90E8",
+        night: "#08090A",
+        panel: "#0F1011",
+        raised: "#16171A",
+        line: "rgba(255,255,255,0.08)",
+        "line-strong": "rgba(255,255,255,0.14)",
+        ink: "#F7F8F8",
+        mute: "#8A8F98",
+        go: "#00ADD8",
+        "go-soft": "#7FDDF0",
       },
       fontFamily: {
-        display: ["var(--font-archivo-black)", "Impact", "Arial Black", "sans-serif"],
-        sans: ["var(--font-archivo)", "Arial", "Helvetica", "sans-serif"],
+        display: ["var(--font-sans)", "system-ui", "sans-serif"],
+        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
+        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
       },
-      borderWidth: {
-        3: "3px",
+      letterSpacing: {
+        crush: "-0.055em",
+        tightest: "-0.035em",
       },
-      boxShadow: {
-        nb: "6px 6px 0 0 #000",
-        "nb-sm": "4px 4px 0 0 #000",
-        "nb-lg": "10px 10px 0 0 #000",
-        "nb-xl": "14px 14px 0 0 #000",
-        "nb-press": "2px 2px 0 0 #000",
-        none: "none",
-      },
-      keyframes: {
-        marquee: {
-          "0%": { transform: "translateX(0)" },
-          "100%": { transform: "translateX(-50%)" },
-        },
-        blink: {
-          "0%, 100%": { opacity: "1" },
-          "50%": { opacity: "0.25" },
-        },
-      },
-      animation: {
-        marquee: "marquee 28s linear infinite",
-        blink: "blink 1.6s ease-in-out infinite",
+      transitionTimingFunction: {
+        out: "cubic-bezier(0.22, 1, 0.36, 1)",
       },
     },
   },
