@@ -1,110 +1,158 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { navLinks, site } from "@/lib/data";
-import { Button, Container } from "./ui";
+import { Container } from "./ui";
+import { ease } from "./motion";
+
+/** Which section is currently under the reading line (scroll-spy). */
+function useActiveSection(ids: string[]) {
+  const [active, setActive] = useState<string | null>(null);
+  useEffect(() => {
+    const els = ids.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) if (e.isIntersecting) setActive(e.target.id);
+      },
+      { rootMargin: "-45% 0px -50% 0px" },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [ids]);
+  return active;
+}
+
+const sectionIds = navLinks.map((l) => l.href.slice(1));
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const { scrollY } = useScroll();
+  const active = useActiveSection(sectionIds);
 
-  // Lock scroll while the mobile menu is open; close on Escape.
+  useMotionValueEvent(scrollY, "change", (y) => setScrolled(y > 12));
+
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    document.documentElement.style.overflow = open ? "hidden" : "";
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
       window.removeEventListener("keydown", onKey);
     };
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50 border-b-3 border-ink bg-paper">
-      <Container>
-        <nav className="flex h-[var(--nav-h)] items-center justify-between" aria-label="Primary">
-          <a href="#main" className="group flex items-center gap-3" aria-label={`${site.name}, back to top`}>
-            <span className="press nb-sm flex h-11 w-11 items-center justify-center bg-sun font-display text-lg leading-none">
-              SK
-            </span>
-            <span className="hidden font-display text-base leading-none sm:block">{site.name}</span>
-          </a>
-
-          <ul className="hidden items-center gap-1 lg:flex">
-            {navLinks.map((l) => (
-              <li key={l.href}>
-                <a
-                  href={l.href}
-                  className="inline-block border-3 border-transparent px-3 py-2 text-base font-bold transition-colors hover:border-ink hover:bg-sun"
-                >
-                  {l.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          <div className="hidden lg:block">
-            <Button href={`mailto:${site.email}`} variant="ink">
-              Hire me
-            </Button>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            aria-expanded={open}
-            aria-controls="mobile-menu"
-            aria-label={open ? "Close menu" : "Open menu"}
-            className="press nb-sm flex h-11 w-11 items-center justify-center bg-white lg:hidden"
-          >
-            <span className="relative block h-4 w-6">
-              <span
-                className={`absolute left-0 top-0 h-[3px] w-6 bg-ink transition-transform ${open ? "translate-y-[6.5px] rotate-45" : ""}`}
-              />
-              <span className={`absolute left-0 top-[6.5px] h-[3px] w-6 bg-ink transition-opacity ${open ? "opacity-0" : ""}`} />
-              <span
-                className={`absolute left-0 top-[13px] h-[3px] w-6 bg-ink transition-transform ${open ? "-translate-y-[6.5px] -rotate-45" : ""}`}
-              />
-            </span>
-          </button>
-        </nav>
-      </Container>
-
-      {/* Mobile menu */}
-      <div
-        id="mobile-menu"
-        className={`fixed inset-x-0 top-[var(--nav-h)] z-40 h-[calc(100dvh-var(--nav-h))] overflow-y-auto border-t-3 border-ink bg-sun dots transition-transform duration-300 lg:hidden ${
-          open ? "translate-x-0" : "translate-x-full"
+    <>
+      <header
+        className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color] duration-300 ${
+          scrolled || open ? "border-line bg-night/80 backdrop-blur-xl" : "border-transparent bg-transparent"
         }`}
-        aria-hidden={!open}
       >
-        <Container className="flex h-full flex-col justify-between py-8">
-          <ul className="flex flex-col gap-3">
-            {navLinks.map((l) => (
-              <li key={l.href}>
-                <a
-                  href={l.href}
-                  onClick={() => setOpen(false)}
-                  tabIndex={open ? 0 : -1}
-                  className="press nb block bg-white px-5 py-4 font-display text-3xl leading-none"
-                >
-                  {l.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-8 flex flex-col gap-3">
-            <a
-              href={`mailto:${site.email}`}
-              onClick={() => setOpen(false)}
-              tabIndex={open ? 0 : -1}
-              className="press nb block bg-ink px-5 py-4 text-center font-display text-2xl leading-none text-white"
-            >
-              Hire me
+        <Container>
+          <nav className="flex h-16 items-center justify-between" aria-label="Primary">
+            <a href="#main" className="flex items-center gap-2.5" aria-label={`${site.name}, back to top`}>
+              <span className="relative h-7 w-7 overflow-hidden rounded-full ring-1 ring-white/15">
+                <Image src="/sahil.png" alt="" fill sizes="28px" className="object-cover" />
+              </span>
+              <span className="text-[15px] font-medium tracking-[-0.01em]">{site.name}</span>
             </a>
-            <p className="text-center text-sm font-semibold">{site.email}</p>
-          </div>
+
+            <ul className="hidden items-center gap-1 md:flex">
+              {navLinks.map((l) => {
+                const isActive = active === l.href.slice(1);
+                return (
+                  <li key={l.href} className="relative">
+                    {isActive ? (
+                      <motion.span
+                        layoutId="nav-pill"
+                        className="absolute inset-0 rounded-full bg-white/[0.07]"
+                        transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                      />
+                    ) : null}
+                    <a
+                      href={l.href}
+                      aria-current={isActive ? "true" : undefined}
+                      className={`relative block rounded-full px-3.5 py-1.5 text-sm transition-colors ${
+                        isActive ? "text-ink" : "text-mute hover:text-ink"
+                      }`}
+                    >
+                      {l.label}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+
+            <div className="flex items-center gap-2">
+              <a
+                href="#contact"
+                className="hidden h-8 items-center rounded-full bg-ink px-3.5 text-sm font-medium text-night transition-colors hover:bg-white md:inline-flex"
+              >
+                Get in Touch
+              </a>
+              <button
+                type="button"
+                onClick={() => setOpen((v) => !v)}
+                aria-expanded={open}
+                aria-controls="mobile-menu"
+                aria-label={open ? "Close menu" : "Open menu"}
+                className="-mr-2 flex h-10 w-10 items-center justify-center md:hidden"
+              >
+                <span className="relative block h-2.5 w-5">
+                  <span
+                    className={`absolute left-0 top-0 h-[1.5px] w-5 bg-ink transition-transform duration-300 ${open ? "translate-y-[4.5px] rotate-45" : ""}`}
+                  />
+                  <span
+                    className={`absolute left-0 top-[9px] h-[1.5px] w-5 bg-ink transition-transform duration-300 ${open ? "-translate-y-[4.5px] -rotate-45" : ""}`}
+                  />
+                </span>
+              </button>
+            </div>
+          </nav>
         </Container>
-      </div>
-    </header>
+      </header>
+
+      <AnimatePresence>
+        {open ? (
+          <motion.div
+            id="mobile-menu"
+            className="fixed inset-x-0 bottom-0 top-16 z-40 overscroll-contain bg-night/95 backdrop-blur-xl md:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+          >
+            <Container className="pt-6">
+              <motion.ul
+                initial="hidden"
+                animate="show"
+                variants={{ hidden: {}, show: { transition: { staggerChildren: 0.05 } } }}
+              >
+                {[...navLinks, { label: "Contact", href: "#contact" }].map((l) => (
+                  <motion.li
+                    key={l.href}
+                    className="border-b border-line"
+                    variants={{
+                      hidden: { opacity: 0, y: -8, filter: "blur(6px)" },
+                      show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.45, ease } },
+                    }}
+                  >
+                    <a href={l.href} onClick={() => setOpen(false)} className="block py-4 text-2xl font-medium tracking-[-0.02em]">
+                      {l.label}
+                    </a>
+                  </motion.li>
+                ))}
+              </motion.ul>
+              <a href={`mailto:${site.email}`} className="mt-8 block text-mute">
+                {site.email}
+              </a>
+            </Container>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </>
   );
 }

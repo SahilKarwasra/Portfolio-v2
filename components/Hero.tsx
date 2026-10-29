@@ -1,134 +1,139 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useReducedMotion } from "motion/react";
-import { site } from "@/lib/data";
-import { ArrowDown, Button, Container, GitHubIcon, IconButton, LinkedInIcon, MailIcon, Sticker } from "./ui";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
+import { companies, site } from "@/lib/data";
+import CodeWindow from "./CodeWindow";
+import LocalTime from "./LocalTime";
+import { ease } from "./motion";
+import { Button, Container } from "./ui";
 
-const ease = [0.22, 1, 0.36, 1] as const;
+/** Words sharpen in one after another from a soft blur. */
+function BlurWords({ text, className = "", delay = 0 }: { text: string; className?: string; delay?: number }) {
+  return (
+    <span className={className}>
+      {text.split(" ").map((w, i) => (
+        <motion.span
+          key={i}
+          className="inline-block"
+          initial={{ opacity: 0, filter: "blur(12px)", y: 10 }}
+          animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+          transition={{ duration: 0.7, ease, delay: delay + i * 0.045 }}
+        >
+          {w}
+          {" "}
+        </motion.span>
+      ))}
+    </span>
+  );
+}
 
 export default function Hero() {
-  const reduce = useReducedMotion();
-  const rise = (delay: number) =>
-    reduce
-      ? {}
-      : {
-          initial: { opacity: 0, y: 28 },
-          animate: { opacity: 1, y: 0 },
-          transition: { duration: 0.7, ease, delay },
-        };
+  const windowRef = useRef<HTMLDivElement>(null);
+  // The product window starts tilted back and settles flat as it scrolls up.
+  const { scrollYProgress } = useScroll({ target: windowRef, offset: ["start end", "start 0.25"] });
+  const rotateX = useTransform(scrollYProgress, [0, 1], [22, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], [0.92, 1]);
+  const y = useTransform(scrollYProgress, [0, 1], [40, 0]);
+
+  const rise = (delay: number) => ({
+    initial: { opacity: 0, y: 14, filter: "blur(8px)" },
+    animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+    transition: { duration: 0.8, ease, delay },
+  });
+
+  const headlineLead = site.headline[0];
+  const leadWords = headlineLead.split(" ").length;
 
   return (
-    <section className="relative overflow-hidden border-b-3 border-ink bg-sun" aria-labelledby="hero-title">
-      <div className="dots pointer-events-none absolute inset-0 opacity-[0.12]" aria-hidden="true" />
+    <section className="relative overflow-hidden pt-32 md:pt-40" aria-labelledby="hero-title">
+      {/* Faint grid that fades out toward the edges */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[720px] opacity-[0.35] [background-image:linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:64px_64px] [mask-image:radial-gradient(ellipse_at_50%_0%,#000_20%,transparent_70%)]"
+      />
 
       <Container className="relative">
-        <div className="grid min-h-[calc(100svh-var(--nav-h))] grid-cols-1 items-center gap-12 py-14 lg:grid-cols-12 lg:gap-8 lg:py-20">
-          {/* Copy */}
-          <div className="order-2 lg:order-1 lg:col-span-8">
-            <motion.div {...rise(0)}>
-              <Sticker color="droid" rotate="-rotate-2">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="absolute inline-flex h-full w-full animate-blink rounded-full bg-ink" />
-                </span>
-                {site.status}
-              </Sticker>
-            </motion.div>
+        <motion.div className="flex flex-wrap items-center gap-3 text-sm" {...rise(0)}>
+          <span className="relative h-9 w-9 overflow-hidden rounded-full ring-1 ring-white/15">
+            <Image src="/sahil.png" alt={site.name} fill priority sizes="36px" className="object-cover" />
+          </span>
+          <span className="font-medium">{site.role}</span>
+          <span className="text-mute">{site.shortLocation}</span>
+          <span className="inline-flex items-center gap-2 rounded-full bg-go/10 px-2.5 py-1 text-[13px] text-go-soft ring-1 ring-inset ring-go/25">
+            <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-go opacity-75" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-go" />
+            </span>
+            {site.status}
+          </span>
+        </motion.div>
 
-            <h1
-              id="hero-title"
-              className="mt-6 font-display uppercase leading-[0.88] tracking-[-0.02em] text-[clamp(2.75rem,13.2vw,6rem)] lg:text-[clamp(3rem,9.4vw,7rem)]"
-            >
-              <motion.span className="block" {...rise(0.08)}>
-                {site.firstName}
-              </motion.span>
-              <motion.span className="block" {...rise(0.16)}>
-                {site.lastName}
-              </motion.span>
-            </h1>
+        <h1
+          id="hero-title"
+          className="mt-8 max-w-[19ch] text-[clamp(2.4rem,6vw,4.9rem)] font-medium leading-[1.02] tracking-[-0.045em]"
+        >
+          <BlurWords text={headlineLead} delay={0.1} />
+          <BlurWords text={site.headline[1]} className="text-mute" delay={0.1 + leadWords * 0.045} />
+        </h1>
 
-            <motion.div className="mt-7 flex flex-wrap items-center gap-3" {...rise(0.26)}>
-              <span className="nb inline-block bg-white px-4 py-2 font-display text-xl leading-none md:text-2xl">
-                {site.role}
-              </span>
-              <span className="text-lg font-bold md:text-xl">{site.subRole}</span>
-            </motion.div>
-
-            <motion.p className="mt-7 max-w-xl text-lg font-medium leading-relaxed md:text-xl" {...rise(0.34)}>
-              {site.heroIntro}
-            </motion.p>
-
-            <motion.div className="mt-9 flex flex-wrap items-center gap-4" {...rise(0.42)}>
-              <Button href={site.resumePath} external variant="ink" size="lg">
-                Download resume
-              </Button>
-              <Button href="#contact" variant="white" size="lg">
-                Get in touch
-              </Button>
-              <div className="flex items-center gap-3 sm:ml-2">
-                <IconButton href={site.linkedin} label="LinkedIn" external>
-                  <LinkedInIcon />
-                </IconButton>
-                <IconButton href={site.github} label="GitHub" external>
-                  <GitHubIcon />
-                </IconButton>
-                <IconButton href={`mailto:${site.email}`} label="Email">
-                  <MailIcon />
-                </IconButton>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Photo */}
-          <div className="order-1 flex justify-center lg:order-2 lg:col-span-4 lg:justify-end">
-            <motion.div
-              className="relative w-[min(78vw,320px)] sm:w-[360px] lg:w-[340px] xl:w-[370px]"
-              initial={reduce ? false : { opacity: 0, rotate: -8, scale: 0.92, y: 24 }}
-              animate={{ opacity: 1, rotate: 0, scale: 1, y: 0 }}
-              transition={{ duration: 0.8, ease, delay: 0.1 }}
-            >
-              {/* Backing shape */}
-              <div className="nb absolute -left-5 -top-5 h-full w-full rotate-[-4deg] bg-violet" aria-hidden="true" />
-
-              {/* Polaroid */}
-              <figure className="nb-lg relative rotate-2 bg-white p-3 pb-4">
-                <div className="relative aspect-square w-full overflow-hidden border-3 border-ink bg-paper">
-                  <Image
-                    src="/sahil.png"
-                    alt={`${site.name} sitting at a rooftop table in the evening`}
-                    fill
-                    priority
-                    sizes="(max-width: 640px) 78vw, 400px"
-                    className="object-cover"
-                  />
-                </div>
-                <figcaption className="mt-3 flex items-center justify-between font-display text-sm leading-none">
-                  <span>{site.name}</span>
-                  <span className="text-ink/60">{site.shortLocation}</span>
-                </figcaption>
-              </figure>
-
-              <Sticker
-                color="pink"
-                rotate="rotate-6 sm:-rotate-6"
-                className="absolute -right-3 -top-4 text-sm sm:-bottom-4 sm:-left-6 sm:right-auto sm:top-auto sm:text-base"
-              >
-                MSc at UEA, 2026 to 27
-              </Sticker>
-            </motion.div>
-          </div>
+        <div className="mt-8 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+          <motion.p className="max-w-xl text-lg leading-relaxed text-mute" {...rise(0.55)}>
+            {site.tagline}
+          </motion.p>
+          <motion.div className="flex flex-wrap items-center gap-3" {...rise(0.65)}>
+            <Button href={site.resumePath} external>
+              Download Resume
+            </Button>
+            <Button href="#contact" variant="ghost">
+              Get in Touch
+            </Button>
+          </motion.div>
         </div>
 
-        <a
-          href="#about"
-          className="absolute bottom-6 left-5 hidden items-center gap-2 font-bold sm:left-8 lg:flex"
-          aria-label="Scroll to about section"
+        <div className="mt-16 [perspective:1400px] md:mt-24">
+          <motion.div
+            ref={windowRef}
+            style={{ rotateX, scale, y, transformOrigin: "50% 0%" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, ease, delay: 0.8 }}
+          >
+            <CodeWindow />
+          </motion.div>
+        </div>
+
+        {/* Where the work has happened */}
+        <motion.div
+          className="mt-20 grid grid-cols-2 border-y border-line md:mt-28 md:grid-cols-4"
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
         >
-          <span className="nb-sm flex h-9 w-9 items-center justify-center bg-white">
-            <ArrowDown className="h-4 w-4" />
-          </span>
-          <span>Scroll</span>
-        </a>
+          {companies.map((c, i) => (
+            <motion.div
+              key={c.name}
+              className={`group px-4 py-7 md:px-6 ${i % 2 === 1 ? "border-l border-line" : ""} ${
+                i > 1 ? "border-t border-line md:border-t-0" : ""
+              } ${i === 2 ? "md:border-l" : ""}`}
+              variants={{
+                hidden: { opacity: 0, filter: "blur(8px)" },
+                show: { opacity: 1, filter: "blur(0px)", transition: { duration: 0.6 } },
+              }}
+            >
+              <p className="text-lg font-medium tracking-[-0.02em] text-ink/70 transition-colors group-hover:text-ink md:text-xl">
+                {c.name}
+              </p>
+              <p className="mt-1 text-sm text-mute">{c.kind}</p>
+            </motion.div>
+          ))}
+        </motion.div>
+        <p className="mt-4 flex items-center justify-between gap-4 text-sm text-mute">
+          <span>Where I have shipped and studied</span>
+          <LocalTime prefix={site.shortLocation} />
+        </p>
       </Container>
     </section>
   );
