@@ -1,73 +1,88 @@
+"use client";
+
+import { useRef } from "react";
+import { motion, useScroll, useSpring } from "motion/react";
 import { experience, now } from "@/lib/data";
-import { Chip, Container, SectionHeading } from "./ui";
+import { Reveal, Stagger, StaggerItem } from "./motion";
+import { Container, SectionHeading } from "./ui";
 
 export default function Experience() {
+  const listRef = useRef<HTMLOListElement>(null);
+  const { scrollYProgress } = useScroll({ target: listRef, offset: ["start 0.7", "end 0.6"] });
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
+
   return (
-    <section id="experience" className="scroll-mt-24 py-20 md:py-28" aria-labelledby="experience-title">
+    <section id="experience" className="py-32 md:py-48" aria-labelledby="experience-title">
       <Container>
         <SectionHeading
           id="experience-title"
-          title="Experience"
-          color="violet"
+          title="Experience."
           lede="Three years shipping production apps across fintech, gaming and client work."
         />
 
-        <ol className="relative border-l-3 border-ink pl-8 sm:pl-12">
-          {/* Now marker: the timeline continues past the last job. */}
-          <li className="relative mb-8">
-            <span
-              className="absolute -left-[calc(2rem+10px)] top-6 h-5 w-5 border-3 border-ink bg-droid sm:-left-[calc(3rem+10px)]"
-              aria-hidden="true"
-            />
-            <div className="nb bg-droid p-6 md:p-8">
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="nb-sm inline-block bg-ink px-3 py-1.5 font-display text-sm leading-none text-white">{now.label}</span>
-                <span className="font-bold">{now.period}</span>
-              </div>
-              <h3 className="mt-4 font-display text-2xl leading-tight md:text-3xl">{now.title}</h3>
-              <p className="mt-3 max-w-2xl font-medium leading-relaxed md:text-lg">{now.desc}</p>
-            </div>
+        <ol ref={listRef} className="relative pl-7 sm:pl-12">
+          {/* Timeline that fills as you read */}
+          <span aria-hidden="true" className="absolute bottom-0 left-0 top-0 w-[2px] rounded-full bg-ink/10" />
+          <motion.span
+            aria-hidden="true"
+            className="absolute bottom-0 left-0 top-0 w-[2px] origin-top rounded-full bg-go"
+            style={{ scaleY: progress }}
+          />
+
+          <li className="relative pb-20 md:pb-28">
+            <span aria-hidden="true" className="absolute -left-7 top-3 h-3 w-3 -translate-x-[5px] rounded-full bg-go sm:-left-12" />
+            <Reveal>
+              <p className="text-base text-go">
+                {now.label}, {now.period}
+              </p>
+              <h3 className="mt-3 max-w-4xl font-display text-[clamp(1.9rem,3.6vw,3.4rem)] font-bold leading-[1] tracking-tightest">
+                {now.title}
+              </h3>
+              <p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink/75">{now.desc}</p>
+            </Reveal>
           </li>
 
           {experience.map((job) => (
-            <li key={job.company} className="relative mb-8 last:mb-0">
-              <span
-                className="absolute -left-[calc(2rem+10px)] top-6 h-5 w-5 border-3 border-ink bg-white sm:-left-[calc(3rem+10px)]"
-                aria-hidden="true"
-              />
-              <article className="nb bg-white">
-                <header className="flex flex-col gap-4 border-b-3 border-ink p-6 md:flex-row md:items-start md:justify-between md:p-8">
-                  <div>
-                    <h3 className="font-display text-3xl leading-none md:text-4xl">{job.company}</h3>
-                    <p className="mt-2 text-lg font-bold">{job.role}</p>
-                    <p className="mt-1 font-medium text-ink/70">{job.summary}</p>
-                  </div>
-                  <div className="flex shrink-0 flex-wrap gap-2 md:flex-col md:items-end">
-                    <span className="nb-sm inline-block bg-sun px-3 py-2 font-display text-sm leading-none">{job.period}</span>
-                    <span className="inline-block border-3 border-ink bg-white px-3 py-2 text-sm font-bold leading-none">
-                      {job.location}
-                    </span>
-                  </div>
-                </header>
+            <li key={job.company} className="relative grid grid-cols-1 gap-8 pb-20 last:pb-0 md:pb-28 lg:grid-cols-12 lg:gap-12">
+              <span aria-hidden="true" className="absolute -left-7 top-3 h-3 w-3 -translate-x-[5px] rounded-full bg-ink sm:-left-12" />
 
-                <div className="p-6 md:p-8">
-                  <ul className="space-y-3">
-                    {job.points.map((p) => (
-                      <li key={p} className="flex gap-3 font-medium leading-relaxed md:text-lg">
-                        <span className="mt-[0.55em] h-3 w-3 shrink-0 border-2 border-ink bg-violet" aria-hidden="true" />
-                        <span>{p}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <ul className="mt-6 flex flex-wrap gap-2" aria-label="Technologies used">
-                    {job.tech.map((t) => (
-                      <li key={t}>
-                        <Chip>{t}</Chip>
-                      </li>
-                    ))}
-                  </ul>
+              <div className="lg:col-span-5">
+                <div className="lg:sticky lg:top-28">
+                  <Reveal>
+                    <p className="text-base tabular-nums text-ink/60">{job.period}</p>
+                    <h3 className="mt-3 font-display text-[clamp(2.4rem,4.6vw,4.4rem)] font-bold leading-[0.92] tracking-crush">
+                      {job.company}
+                    </h3>
+                    <p className="mt-4 text-xl">{job.role}</p>
+                    <p className="mt-1 text-base text-ink/60">{job.location}</p>
+                  </Reveal>
                 </div>
-              </article>
+              </div>
+
+              <div className="lg:col-span-7">
+                <Reveal delay={0.1}>
+                  <p className="font-display text-2xl font-semibold leading-snug tracking-tightest text-go-soft md:text-[1.7rem]">
+                    {job.summary}
+                  </p>
+                </Reveal>
+                <Stagger className="mt-8 space-y-5">
+                  {job.points.map((p) => (
+                    <StaggerItem key={p} className="flex gap-4 text-lg leading-relaxed text-ink/85">
+                      <span aria-hidden="true" className="mt-[0.7em] h-1.5 w-1.5 shrink-0 rounded-full bg-go" />
+                      <span>{p}</span>
+                    </StaggerItem>
+                  ))}
+                </Stagger>
+                <Reveal delay={0.1}>
+                  <ul className="mt-8 flex flex-wrap gap-x-5 gap-y-1 text-base text-ink/55" aria-label="Technologies used">
+                    {job.tech.map((t) => (
+                      <li key={t} className="whitespace-nowrap" translate="no">
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
+                </Reveal>
+              </div>
             </li>
           ))}
         </ol>

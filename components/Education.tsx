@@ -1,32 +1,35 @@
 import { education } from "@/lib/data";
-import { colorBg, Container, SectionHeading } from "./ui";
+import { Spotlight, Stagger, StaggerItem } from "./motion";
+import { Container, SectionHeading } from "./ui";
 
 export default function Education() {
   return (
-    <section id="education" className="scroll-mt-24 border-y-3 border-ink bg-white py-20 md:py-28" aria-labelledby="education-title">
+    <section id="education" className="py-24 md:py-32" aria-labelledby="education-title">
       <Container>
-        <SectionHeading id="education-title" title="Education" color="droid" lede="Postgraduate study on top of an industry foundation." />
+        <SectionHeading id="education-title" title="Education." lede="Postgraduate study on top of an industry foundation." />
 
-        <ul className="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <Stagger as="ul" className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {education.map((s) => (
-            <li key={s.institution} className={`nb flex flex-col p-6 md:p-8 ${colorBg[s.color]}`}>
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <span className="nb-sm inline-block bg-white px-3 py-2 font-display text-sm leading-none">{s.period}</span>
-                <span
-                  className={`inline-block border-3 border-ink px-3 py-2 text-sm font-bold leading-none ${
-                    s.status === "In progress" ? "bg-ink text-white" : "bg-white"
-                  }`}
-                >
-                  {s.status}
-                </span>
-              </div>
-              <h3 className="mt-8 font-display text-3xl leading-none md:text-4xl">{s.institution}</h3>
-              <p className="mt-3 text-xl font-bold">{s.degree}</p>
-              <p className="mb-6 mt-1 font-medium">{s.location}</p>
-              <p className="mt-auto border-t-3 border-ink pt-5 font-medium leading-relaxed">{s.note}</p>
-            </li>
+            <StaggerItem key={s.institution}>
+              <Spotlight className="flex h-full flex-col rounded-2xl border border-line bg-panel p-6 md:p-8">
+                <div className="flex items-center justify-between gap-4 text-sm">
+                  <span className="tabular-nums text-mute">{s.period}</span>
+                  <span
+                    className={`rounded-full px-2.5 py-1 text-[13px] ring-1 ring-inset ${
+                      s.status === "In progress" ? "bg-go/10 text-go-soft ring-go/25" : "text-mute ring-line-strong"
+                    }`}
+                  >
+                    {s.status}
+                  </span>
+                </div>
+                <h3 className="mt-10 text-[clamp(1.6rem,2.6vw,2.1rem)] font-medium leading-tight tracking-[-0.03em]">{s.institution}</h3>
+                <p className="mt-2 text-lg">{s.degree}</p>
+                <p className="mt-1 text-[15px] text-mute">{s.location}</p>
+                <p className="mt-8 border-t border-line pt-6 text-[15px] leading-relaxed text-mute">{s.note}</p>
+              </Spotlight>
+            </StaggerItem>
           ))}
-        </ul>
+        </Stagger>
       </Container>
     </section>
   );
