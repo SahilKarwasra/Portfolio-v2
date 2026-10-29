@@ -1,145 +1,78 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-
-export const colorBg: Record<string, string> = {
-  sun: "bg-sun",
-  sky: "bg-sky",
-  violet: "bg-violet",
-  droid: "bg-droid",
-  pink: "bg-pink",
-  white: "bg-white",
-  ink: "bg-ink",
-  paper: "bg-paper",
-};
+import { Reveal } from "./motion";
 
 type ButtonProps = {
   href: string;
   children: ReactNode;
-  variant?: "ink" | "white" | "sun" | "droid";
-  size?: "md" | "lg";
+  variant?: "solid" | "ghost";
   external?: boolean;
   className?: string;
   ariaLabel?: string;
 };
 
-export function Button({
-  href,
-  children,
-  variant = "ink",
-  size = "md",
-  external,
-  className = "",
-  ariaLabel,
-}: ButtonProps) {
+/**
+ * Pill button. On hover the arrow slides out and a fresh one slides in.
+ */
+export function Button({ href, children, variant = "solid", external, className = "", ariaLabel }: ButtonProps) {
   const base =
-    "press nb inline-flex items-center justify-center gap-2 font-display leading-none whitespace-nowrap";
-  const sizes = size === "lg" ? "px-7 py-4 text-lg md:text-xl" : "px-5 py-3 text-base";
-  const variants: Record<string, string> = {
-    ink: "bg-ink text-white",
-    white: "bg-white text-ink",
-    sun: "bg-sun text-ink",
-    droid: "bg-droid text-ink",
+    "group inline-flex h-11 items-center justify-center gap-2 rounded-full px-5 text-[15px] font-medium leading-none whitespace-nowrap transition-[background-color,box-shadow,color] duration-300";
+  const variants = {
+    solid: "bg-ink text-night hover:bg-white shadow-[0_0_0_1px_rgba(255,255,255,0.1)]",
+    ghost: "bg-white/[0.04] text-ink shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)] hover:bg-white/[0.08]",
   };
-  const cls = `${base} ${sizes} ${variants[variant]} ${className}`;
-  const isHash = href.startsWith("#");
+  const cls = `${base} ${variants[variant]} ${className}`;
+  const inner = (
+    <>
+      <span>{children}</span>
+      <span className="relative h-3.5 w-3.5 overflow-hidden" aria-hidden="true">
+        <ArrowUpRight className="absolute inset-0 h-3.5 w-3.5 transition-transform duration-500 ease-out group-hover:-translate-y-full group-hover:translate-x-full" />
+        <ArrowUpRight className="absolute inset-0 h-3.5 w-3.5 -translate-x-full translate-y-full transition-transform duration-500 ease-out group-hover:translate-x-0 group-hover:translate-y-0" />
+      </span>
+    </>
+  );
 
   if (external) {
     return (
       <a href={href} target="_blank" rel="noopener noreferrer" className={cls} aria-label={ariaLabel}>
-        {children}
+        {inner}
       </a>
     );
   }
-  if (isHash || href.startsWith("mailto:")) {
+  if (href.startsWith("#") || href.startsWith("mailto:")) {
     return (
       <a href={href} className={cls} aria-label={ariaLabel}>
-        {children}
+        {inner}
       </a>
     );
   }
   return (
     <Link href={href} className={cls} aria-label={ariaLabel}>
-      {children}
+      {inner}
     </Link>
   );
 }
 
-type IconButtonProps = {
-  href: string;
-  label: string;
-  children: ReactNode;
-  external?: boolean;
-  className?: string;
-};
-
-export function IconButton({ href, label, children, external, className = "" }: IconButtonProps) {
-  return (
-    <a
-      href={href}
-      target={external ? "_blank" : undefined}
-      rel={external ? "noopener noreferrer" : undefined}
-      aria-label={label}
-      title={label}
-      className={`press nb-sm inline-flex h-12 w-12 items-center justify-center bg-white text-ink ${className}`}
-    >
-      {children}
-    </a>
-  );
-}
-
-export function Sticker({
-  children,
-  color = "sun",
-  rotate = "-rotate-2",
-  className = "",
-}: {
-  children: ReactNode;
-  color?: keyof typeof colorBg;
-  rotate?: string;
-  className?: string;
-}) {
-  return (
-    <span
-      className={`nb-sm inline-flex items-center gap-2 px-3 py-1.5 font-display text-sm leading-none ${colorBg[color]} ${rotate} ${className}`}
-    >
-      {children}
-    </span>
-  );
-}
-
-export function Chip({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <span className={`chip ${className}`}>{children}</span>;
-}
-
 /**
- * Section heading: the word itself is the sticker. Color encodes the section.
+ * Two-tone section heading (Linear style): the title in full ink, the lede
+ * continuing the same sentence in muted grey.
  */
-export function SectionHeading({
-  title,
-  lede,
-  color = "sun",
-  id,
-}: {
-  title: string;
-  lede?: string;
-  color?: keyof typeof colorBg;
-  id?: string;
-}) {
+export function SectionHeading({ title, lede, id }: { title: string; lede?: string; id?: string }) {
   return (
-    <div className="mb-10 flex flex-col gap-5 md:mb-14 md:flex-row md:items-end md:justify-between">
+    <Reveal blur className="mb-14 md:mb-20">
       <h2
         id={id}
-        className={`nb inline-block self-start px-4 py-2 font-display text-4xl leading-none md:px-6 md:py-3 md:text-6xl ${colorBg[color]} -rotate-1`}
+        className="max-w-3xl text-[clamp(2rem,4.2vw,3.5rem)] font-medium leading-[1.08] tracking-[-0.035em]"
       >
         {title}
+        {lede ? <span className="text-mute"> {lede}</span> : null}
       </h2>
-      {lede ? <p className="max-w-md text-lg font-medium leading-snug md:text-right md:text-xl">{lede}</p> : null}
-    </div>
+    </Reveal>
   );
 }
 
 export function Container({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <div className={`mx-auto w-full max-w-6xl px-5 sm:px-8 ${className}`}>{children}</div>;
+  return <div className={`mx-auto w-full max-w-[1240px] px-5 sm:px-8 ${className}`}>{children}</div>;
 }
 
 /* ---------------------------------------------------------------- icons */
